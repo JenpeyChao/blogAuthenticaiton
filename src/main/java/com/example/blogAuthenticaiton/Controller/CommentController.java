@@ -1,11 +1,15 @@
 package com.example.blogAuthenticaiton.Controller;
 
+import com.example.blogAuthenticaiton.Config.UsersDetails;
+import com.example.blogAuthenticaiton.Entity.blog;
 import com.example.blogAuthenticaiton.Entity.comment;
+import com.example.blogAuthenticaiton.Entity.user;
+import com.example.blogAuthenticaiton.Repository.UserDAO;
 import com.example.blogAuthenticaiton.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,10 +18,27 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private UserDAO userDAO;
 
-    @GetMapping("/comments")
-    public List<comment> getComments(){
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/comments/all")
+    public List<comment> getAllComments(){
         return this.commentService.getAllComments();
+    }
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @GetMapping("/comments/nonhidden")
+    public List<comment> getComments(){
+        return this.commentService.getComment();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PostMapping("/comment")
+    public comment addComment(@RequestBody comment comment, @AuthenticationPrincipal UsersDetails userDetails){
+        user userDetail = userDAO.findById(userDetails.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        comment.setUserId(userDetail);
+        comment.setShowComment(false);
+        return this.commentService.addComment(comment);
     }
 
 }

@@ -20,7 +20,6 @@ public class comment {
     @ManyToOne
     @JoinColumn(name = "blogId", nullable = false)
     private blog blogId;
-    private String name;
     private String body;
     private Boolean showComment;
 
