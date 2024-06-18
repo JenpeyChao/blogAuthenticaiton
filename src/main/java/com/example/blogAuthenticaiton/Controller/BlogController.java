@@ -22,24 +22,10 @@ public class BlogController {
     private UserDAO userDAO;
     @Autowired
     private BlogService blogService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String home(){
         return "Welcome to the blog";
-    }
-
-    @PostMapping("/addUser")
-    public ResponseEntity<Object> saveUSer(@RequestBody user user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user result = userDAO.save(user);
-        if (result.getUserId() > 0){
-            return ResponseEntity.ok("USer Was Saved");
-        }
-        return ResponseEntity.status(404).body("Error, USer Not Saved");
     }
 
     @GetMapping("/blogs")
@@ -62,16 +48,14 @@ public class BlogController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/showUsers")
-    public List<user> showUsers(){
-        return this.userService.getAllUsers();
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/blogs/all")
     public List<blog> getAllBlogs(){
         return this.blogService.getAllBlog();
     }
 
+    @GetMapping("/blogs/{title}")
+    public List<blog> getBlogByTitle(@PathVariable String title){
+        return this.blogService.findBlogByTitle(title);
+    }
 
 }

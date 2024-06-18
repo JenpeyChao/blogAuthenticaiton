@@ -19,5 +19,7 @@ public class BlogService {
     public blog addBlog(blog blog){
         return this.blogDAO.save(blog);
     }
-
+    public List<blog> findBlogByTitle(String title){
+        return blogDAO.findBlogByTitle(title);
+    }
 }
