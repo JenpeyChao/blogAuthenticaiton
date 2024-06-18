@@ -41,10 +41,18 @@ public class CommentController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/comments/{commentId}")
-    public comment setComment(@PathVariable long commentId){
+    @PutMapping("/comments/on/{commentId}")
+    public comment setCommentOn(@PathVariable long commentId){
         comment comment = commentService.getCommentById(commentId);
         comment.setShowComment(true);
+        return this.commentService.addComment(comment);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/comments/off/{commentId}")
+    public comment setCommentOff(@PathVariable long commentId){
+        comment comment = commentService.getCommentById(commentId);
+        comment.setShowComment(false);
         return this.commentService.addComment(comment);
     }
 }
