@@ -18,10 +18,16 @@ public class CommentService {
     }
 
     public List<comment> getComment() {
-        return this.commentDAO.findNonHiddenComment(false);
+        return this.commentDAO.findNonHiddenComment();
     }
+
+
 
     public comment addComment(comment comment){
         return this.commentDAO.save(comment);
+    }
+
+    public comment getCommentById(long commentId) {
+        return this.commentDAO.findCommentById(commentId);
     }
 }

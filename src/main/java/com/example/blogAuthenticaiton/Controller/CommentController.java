@@ -33,7 +33,7 @@ public class CommentController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     public comment addComment(@RequestBody comment comment, @AuthenticationPrincipal UsersDetails userDetails){
         user userDetail = userDAO.findById(userDetails.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         comment.setUserId(userDetail);
@@ -41,4 +41,11 @@ public class CommentController {
         return this.commentService.addComment(comment);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/comments/{commentId}")
+    public comment setComment(@PathVariable long commentId){
+        comment comment = commentService.getCommentById(commentId);
+        comment.setShowComment(true);
+        return this.commentService.addComment(comment);
+    }
 }
