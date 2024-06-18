@@ -10,9 +10,12 @@ import lombok.Setter;
 public class user {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userId;
-    private String role;
+    private Long userId;
+
+    @Column(unique = true)
     private String username;
     private String password;
+    private String role;
+
 
 }

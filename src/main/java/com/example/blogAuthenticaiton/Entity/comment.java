@@ -22,5 +22,6 @@ public class comment {
     private blog blogId;
     private String name;
     private String body;
+    private Boolean showComment;
 
 }

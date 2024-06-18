@@ -13,9 +13,11 @@ public class blog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long blogId;
     @ManyToOne
+
     @JoinColumn(name = "userId", nullable = false)
     private user userId;
     private String title;
     private String body;
+
 
 }
