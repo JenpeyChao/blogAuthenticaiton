@@ -1,7 +1,6 @@
 package com.example.blogAuthenticaiton.Controller;
 
 import com.example.blogAuthenticaiton.Config.UsersDetails;
-import com.example.blogAuthenticaiton.Entity.blog;
 import com.example.blogAuthenticaiton.Entity.comment;
 import com.example.blogAuthenticaiton.Entity.user;
 import com.example.blogAuthenticaiton.Repository.UserDAO;
